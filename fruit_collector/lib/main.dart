@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
@@ -25,31 +27,8 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
+      
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-// https://docs.flutter.dev/cookbook/navigation/navigation-basics
-
-class SecondScreen extends StatelessWidget {
-  const SecondScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Game'),
-      ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            // Navigate back to first route when tapped.
-            Navigator.pop(context);
-          },
-          child: const Text('Go back!'),
-        ),
-      ),
     );
   }
 }
@@ -139,7 +118,98 @@ class _MyHomePageState extends State<MyHomePage> {
         },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ), 
+      //https://docs.flutter.dev/cookbook/design/drawer
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Text('Settings'),
+            ),
+            ListTile(
+              title: const Text('Light Mode'),
+              onTap: (){
+
+                Navigator.pop(context);
+              } ,
+            ),
+
+            ListTile(
+              title: const Text('Dark Mode'),
+              onTap: (){
+
+                Navigator.pop(context);
+              },
+            ),
+          ],
+
+
+        ),
+      ),
+    );
+  }
+}
+
+class GameScreen extends StatefulWidget {
+  const GameScreen({Key? key}) : super(key: key);
+
+  @override
+  State<GameScreen> createState() => _GameScreenState();
+}
+
+class _GameScreenState extends State<GameScreen> {
+  double x = 0, y = 0, z = 0;
+  String direction = "none";
+
+  @override
+  void initState() {
+    accelerometerEvents.listen((AccelerometerEvent event) {
+      print(event);
+    });
+    gyroscopeEvents.listen((GyroscopeEvent event) {
+      print(event);
+
+      x = event.x;
+      y = event.y;
+      z = event.z;
+
+      //rough calculation, you can use
+      //advance formula to calculate the orentation
+      if (x > 0.75) {
+        direction = "back";
+      } else if (x < -.75) {
+        direction = "forward";
+      } else if (y > 0) {
+        direction = "left";
+      } else if (y < 0) {
+        direction = "right";
+      }
+
+      setState(() {});
+    });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Gyroscope Sensor in Flutter"),
+        backgroundColor: Colors.redAccent,
+      ),
+      body: Container(
+          alignment: Alignment.center,
+          padding: EdgeInsets.all(30),
+          child: Column(children: [
+            Text(
+              direction,
+              style: TextStyle(fontSize: 30),
+            )
+          ])),
     );
   }
 }
