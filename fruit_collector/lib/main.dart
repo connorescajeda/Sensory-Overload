@@ -157,6 +157,9 @@ class _GameScreenState extends State<GameScreen> {
 
   @override
   void initState() {
+    accelerometerEvents.listen((AccelerometerEvent event) {
+      print(event);
+    });
     gyroscopeEvents.listen((GyroscopeEvent event) {
       print(event);
 
@@ -166,9 +169,9 @@ class _GameScreenState extends State<GameScreen> {
 
       //rough calculation, you can use
       //advance formula to calculate the orentation
-      if (x > 0) {
+      if (x > 0.75) {
         direction = "back";
-      } else if (x < 0) {
+      } else if (x < -.75) {
         direction = "forward";
       } else if (y > 0) {
         direction = "left";
