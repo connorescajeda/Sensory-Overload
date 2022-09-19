@@ -157,9 +157,6 @@ class _GameScreenState extends State<GameScreen> {
 
   @override
   void initState() {
-    accelerometerEvents.listen((AccelerometerEvent event) {
-      print(event);
-    });
     gyroscopeEvents.listen((GyroscopeEvent event) {
       print(event);
 
@@ -198,6 +195,35 @@ class _GameScreenState extends State<GameScreen> {
             Text(
               direction,
               style: TextStyle(fontSize: 30),
+            ),
+            SizedBox(
+              width: 50,
+              height: 50,
+              child: Stack(
+                children: [
+                  AnimatedPositioned(
+                    width: 50,
+                    height: 50,
+                    top: direction == "forward" ? 50.0 : 150.0,
+                    bottom: direction == "back" ? 50.0 : 150.0,
+                    right: direction == "right" ? 50.0 : 150.0,
+                    left: direction == "left" ? 50.0 : 150.0,
+                    duration: const Duration(seconds: 2),
+                    curve: Curves.fastOutSlowIn,
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          //selected = !selected;
+                        });
+                      },
+                      child: Container(
+                        color: Colors.blue,
+                        child: const Center(child: Text('Tap me')),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             )
           ])),
     );
