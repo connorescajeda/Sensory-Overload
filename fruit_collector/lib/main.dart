@@ -1,7 +1,8 @@
-import 'dart:html';
+//import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:sensors_plus/sensors_plus.dart';
+import 'player.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,11 +28,12 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
+
+// https://docs.flutter.dev/cookbook/navigation/navigation-basics
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -118,38 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
         },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
-      ), 
-      //https://docs.flutter.dev/cookbook/design/drawer
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Text('Settings'),
-            ),
-            ListTile(
-              title: const Text('Light Mode'),
-              onTap: (){
-
-                Navigator.pop(context);
-              } ,
-            ),
-
-            ListTile(
-              title: const Text('Dark Mode'),
-              onTap: (){
-
-                Navigator.pop(context);
-              },
-            ),
-          ],
-
-
-        ),
-      ),
+      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
@@ -158,18 +129,25 @@ class GameScreen extends StatefulWidget {
   const GameScreen({Key? key}) : super(key: key);
 
   @override
-  State<GameScreen> createState() => _GameScreenState();
+  //State<GameScreen> createState() => _GameScreenState();
+  _GameScreenState createState() => _GameScreenState();
 }
 
 class _GameScreenState extends State<GameScreen> {
+  static const int _fruitRows = 20;
+  static const int _fruitColumns = 20;
+  static const double _fruitCellSize = 10.0;
+
+  List<double>? _accelerometerValues;
+  List<double>? _userAccelerometerValues;
+  List<double>? _gyroscopeValues;
+  List<double>? _magnetometerValues;
+
   double x = 0, y = 0, z = 0;
   String direction = "none";
 
   @override
   void initState() {
-    accelerometerEvents.listen((AccelerometerEvent event) {
-      print(event);
-    });
     gyroscopeEvents.listen((GyroscopeEvent event) {
       print(event);
 
@@ -179,9 +157,9 @@ class _GameScreenState extends State<GameScreen> {
 
       //rough calculation, you can use
       //advance formula to calculate the orentation
-      if (x > 0.75) {
+      if (x > 0) {
         direction = "back";
-      } else if (x < -.75) {
+      } else if (x < 0) {
         direction = "forward";
       } else if (y > 0) {
         direction = "left";
@@ -196,6 +174,18 @@ class _GameScreenState extends State<GameScreen> {
 
   @override
   Widget build(BuildContext context) {
+    //goadrich snake sensor demo
+
+    final accelerometer =
+        _accelerometerValues?.map((double v) => v.toStringAsFixed(1)).toList();
+    final gyroscope =
+        _gyroscopeValues?.map((double v) => v.toStringAsFixed(1)).toList();
+    final userAccelerometer = _userAccelerometerValues
+        ?.map((double v) => v.toStringAsFixed(1))
+        .toList();
+    final magnetometer =
+        _magnetometerValues?.map((double v) => v.toStringAsFixed(1)).toList();
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Gyroscope Sensor in Flutter"),
@@ -204,72 +194,39 @@ class _GameScreenState extends State<GameScreen> {
       body: Container(
           alignment: Alignment.center,
           padding: EdgeInsets.all(30),
-          child: Column(children: [
-            Text(
-              direction,
-              style: TextStyle(fontSize: 30),
-            )
-          ])),
-    );
-  }
-}
-
-class GameScreen extends StatefulWidget {
-  const GameScreen({Key? key}) : super(key: key);
-
-  @override
-  State<GameScreen> createState() => _GameScreenState();
-}
-
-class _GameScreenState extends State<GameScreen> {
-  double x = 0, y = 0, z = 0;
-  String direction = "none";
-
-  @override
-  void initState() {
-    accelerometerEvents.listen((AccelerometerEvent event) {
-      print(event);
-    });
-    gyroscopeEvents.listen((GyroscopeEvent event) {
-      print(event);
-
-      x = event.x;
-      y = event.y;
-      z = event.z;
-
-      //rough calculation, you can use
-      //advance formula to calculate the orentation
-      if (x > 0.75) {
-        direction = "back";
-      } else if (x < -.75) {
-        direction = "forward";
-      } else if (y > 0) {
-        direction = "left";
-      } else if (y < 0) {
-        direction = "right";
-      }
-
-      setState(() {});
-    });
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Gyroscope Sensor in Flutter"),
-        backgroundColor: Colors.redAccent,
-      ),
-      body: Container(
-          alignment: Alignment.center,
-          padding: EdgeInsets.all(30),
-          child: Column(children: [
-            Text(
-              direction,
-              style: TextStyle(fontSize: 30),
-            )
-          ])),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Text(
+                  direction,
+                  style: TextStyle(fontSize: 30),
+                ),
+                Center(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      border: Border.all(width: 1.0, color: Colors.black38),
+                    ),
+                    child: SizedBox(
+                      height: _fruitRows * _fruitCellSize,
+                      width: _fruitColumns * _fruitCellSize,
+                      child: Player(
+                        rows: _fruitRows,
+                        columns: _fruitColumns,
+                        cellSize: _fruitCellSize,
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text('Points:'),
+                    ],
+                  ),
+                ),
+              ])),
     );
   }
 }
