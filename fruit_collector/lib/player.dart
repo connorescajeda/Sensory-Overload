@@ -1,11 +1,19 @@
 import 'dart:async';
+import 'dart:ffi' as prefix;
 import 'dart:math' as math;
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:sensors_plus/sensors_plus.dart';
+import 'package:fruit_collector/fruit.dart';
 
 class Player extends StatefulWidget {
-  Player({Key? key, this.rows = 20, this.columns = 20, this.cellSize = 10.0})
+  Player(
+      {Key? key,
+      this.rows = 20,
+      this.columns = 20,
+      this.cellSize = 10.0,
+      this.fruitAmount = 6})
       : super(key: key) {
     assert(10 <= rows);
     assert(10 <= columns);
@@ -15,10 +23,12 @@ class Player extends StatefulWidget {
   final int rows;
   final int columns;
   final double cellSize;
+  final int fruitAmount;
 
   @override
   // ignore: no_logic_in_create_state
-  State<StatefulWidget> createState() => PlayerState(rows, columns, cellSize);
+  State<StatefulWidget> createState() =>
+      PlayerState(rows, columns, cellSize, fruitAmount);
 }
 
 class PlayerBoardPainter extends CustomPainter {
@@ -33,6 +43,13 @@ class PlayerBoardPainter extends CustomPainter {
     final blackFilled = Paint()
       ..color = Colors.black
       ..style = PaintingStyle.fill;
+
+    final fruitFilled = Paint()
+      ..color = Colors.yellow
+      ..style = PaintingStyle.fill;
+
+    state?.fruitCreation();
+
     canvas.drawRect(
       Rect.fromPoints(Offset.zero, size.bottomLeft(Offset.zero)),
       blackLine,
@@ -43,6 +60,12 @@ class PlayerBoardPainter extends CustomPainter {
 
       canvas.drawRect(Rect.fromPoints(a, b), blackFilled);
     }
+    for (final p in state!.fruits) {
+      final a = Offset(cellSize * p.x, cellSize * p.y);
+      final b = Offset(cellSize * (p.x + 1), cellSize * (p.y + 1));
+
+      canvas.drawRect(Rect.fromPoints(a, b), fruitFilled);
+    }
   }
 
   @override
@@ -52,8 +75,8 @@ class PlayerBoardPainter extends CustomPainter {
 }
 
 class PlayerState extends State<Player> {
-  PlayerState(int rows, int columns, this.cellSize) {
-    state = GameState(rows, columns);
+  PlayerState(int rows, int columns, this.cellSize, int fruitAmount) {
+    state = GameState(rows, columns, fruitAmount);
   }
 
   double cellSize;
@@ -143,6 +166,7 @@ class PlayerState extends State<Player> {
     } else if (direction == "right") {
       newDirection = const math.Point<int>(-1, 0);
     }
+
     state!.step(newDirection);
   }
 
@@ -159,14 +183,17 @@ class PlayerState extends State<Player> {
 }
 
 class GameState {
-  GameState(this.rows, this.columns) {
+  GameState(this.rows, this.columns, this.fruitAmount) {
     playerLength = 1;
   }
 
   int rows;
   int columns;
   late int playerLength;
-
+  int fruitAmount;
+  var rand = math.Random();
+  bool check = false;
+  List<Fruit> fruits = <Fruit>[Fruit(const math.Point<int>(2, 2))];
   List<math.Point<int>> body = <math.Point<int>>[const math.Point<int>(0, 0)];
   math.Point<int> direction = const math.Point<int>(1, 0);
 
@@ -177,5 +204,16 @@ class GameState {
     body.add(next);
     if (body.length > playerLength) body.removeAt(0);
     direction = newDirection ?? direction;
+  }
+
+  void fruitCreation() {
+    if (!check) {
+      for (var i = 0; i < fruitAmount; i++) {
+        Fruit tmp =
+            Fruit(math.Point<int>(rand.nextInt(columns), (rand.nextInt(rows))));
+        fruits.add(tmp);
+      }
+      check = true;
+    }
   }
 }
