@@ -225,34 +225,7 @@ class _GameScreenState extends State<GameScreen> {
                       Text('Points:'),
                     ],
                   ),
-                ), /*
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text('UserAccelerometer: $userAccelerometer'),
-                    ],
-                  ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text('Gyroscope: $gyroscope'),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text('Magnetometer: $magnetometer'),
-                    ],
-                  ),
-                ),*/
               ])),
     );
   }

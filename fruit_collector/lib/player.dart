@@ -105,7 +105,8 @@ class PlayerState extends State<Player> {
 
 class GameState {
   GameState(this.rows, this.columns) {
-    playerLength = math.min(rows, columns) - 5;
+    //playerLength = math.min(rows, columns) - 5;
+    playerLength = 1;
   }
 
   int rows;
