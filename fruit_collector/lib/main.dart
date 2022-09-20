@@ -1,5 +1,7 @@
 //import 'dart:html';
 
+import 'globals.dart' as globals;
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -102,6 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          globals.timerDuration = Duration(seconds: 0);
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const GameScreen()),
@@ -133,10 +136,10 @@ class _GameScreenState extends State<GameScreen> {
 // //https://www.flutterbeads.com/flutter-countdown-timer/#:~:text=Steps%20to%20add%20countdown%20timer,()%20to%20stop%20the%20timer.
   Timer? countdownTimer;
 
-  Duration timerDuration = Duration(seconds: 60);
+  //Duration timerDuration = Duration(seconds: 60);
 
   void startTimer() {
-    setState(() => timerDuration = Duration(seconds: 60));
+    setState(() => globals.timerDuration = Duration(seconds: 60));
     countdownTimer =
         Timer.periodic(Duration(seconds: 1), (_) => setCountDown());
   }
@@ -148,11 +151,11 @@ class _GameScreenState extends State<GameScreen> {
   void setCountDown() {
     const reduceSecondsBy = 1;
     setState(() {
-      final seconds = timerDuration.inSeconds - reduceSecondsBy;
+      final seconds = globals.timerDuration.inSeconds - reduceSecondsBy;
       if (seconds < 0) {
         stopTimer();
       } else {
-        timerDuration = Duration(seconds: seconds);
+        globals.timerDuration = Duration(seconds: seconds);
       }
     });
   }
@@ -187,7 +190,7 @@ class _GameScreenState extends State<GameScreen> {
     //goadrich snake sensor demo
 
     String strDigits(int n) => n.toString().padLeft(2, '0');
-    final seconds = strDigits(timerDuration.inSeconds.remainder(60));
+    final seconds = strDigits(globals.timerDuration.inSeconds.remainder(60));
 
     return Scaffold(
       appBar: AppBar(

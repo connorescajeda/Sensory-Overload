@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ffi' as prefix;
 import 'dart:math' as math;
 import 'dart:math';
+import 'globals.dart' as globals;
 
 import 'package:flutter/material.dart';
 import 'package:sensors_plus/sensors_plus.dart';
@@ -165,6 +166,12 @@ class PlayerState extends State<Player> {
       newDirection = const math.Point<int>(1, 0);
     } else if (direction == "right") {
       newDirection = const math.Point<int>(-1, 0);
+    }
+
+    final seconds = globals.timerDuration.inSeconds;
+
+    if (seconds < 1) {
+      newDirection = const math.Point<int>(0, 0);
     }
 
     state!.step(newDirection);
