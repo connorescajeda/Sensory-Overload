@@ -61,6 +61,7 @@ class PlayerState extends State<Player> {
   AccelerometerEvent? acceleration;
   late StreamSubscription<AccelerometerEvent> _streamSubscription;
   late Timer _timer;
+  late StreamSubscription<GyroscopeEvent> subscription;
 
   @override
   Widget build(BuildContext context) {
@@ -74,6 +75,10 @@ class PlayerState extends State<Player> {
     _timer.cancel();
   }
 
+  String direction = "none";
+  String pastDir = "none";
+  double x = 0, y = 0, z = 0;
+
   @override
   void initState() {
     super.initState();
@@ -84,6 +89,34 @@ class PlayerState extends State<Player> {
       });
     });
 
+    subscription = gyroscopeEvents.listen((GyroscopeEvent event) {
+      print(event);
+
+      //rough calculation, you can use
+      //advance formula to calculate the orentation
+      if (x > 0) {
+        direction = "back";
+        pastDir = direction;
+      } else if (x < 0) {
+        direction = "forward";
+        pastDir = direction;
+      } else if (y > 0) {
+        direction = "left";
+        pastDir = direction;
+      } else if (y < 0) {
+        direction = "right";
+        pastDir = direction;
+      } else if (x == 0) {
+        direction = pastDir;
+      }
+
+      setState(() {
+        x = event.x;
+        y = event.y;
+        z = event.z;
+      });
+    });
+
     _timer = Timer.periodic(const Duration(milliseconds: 200), (_) {
       setState(() {
         _step();
@@ -91,21 +124,42 @@ class PlayerState extends State<Player> {
     });
   }
 
+  //   _timer = Timer.periodic(const Duration(milliseconds: 200), (_) {
+  //     setState(() {
+  //       _step();
+  //     });
+  //   });
+  // }
+
   void _step() {
-    final newDirection = acceleration == null
-        ? null
-        : acceleration!.x.abs() < 1.0 && acceleration!.y.abs() < 1.0
-            ? null
-            : (acceleration!.x.abs() < acceleration!.y.abs())
-                ? math.Point<int>(0, acceleration!.y.sign.toInt())
-                : math.Point<int>(-acceleration!.x.sign.toInt(), 0);
+    math.Point<int> newDirection = const math.Point<int>(0, 0);
+    bool flag = direction == pastDir;
+    if (direction == "back") {
+      newDirection = const math.Point<int>(0, 1);
+    } else if (direction == "forward") {
+      newDirection = const math.Point<int>(0, -1);
+    } else if (direction == "left") {
+      newDirection = const math.Point<int>(1, 0);
+    } else if (direction == "right") {
+      newDirection = const math.Point<int>(-1, 0);
+    }
     state!.step(newDirection);
   }
+
+//   void _step() {
+//     final newDirection = acceleration == null
+//         ? null
+//         : acceleration!.x.abs() < 1.0 && acceleration!.y.abs() < 1.0
+//             ? null
+//             : (acceleration!.x.abs() < acceleration!.y.abs())
+//                 ? math.Point<int>(0, acceleration!.y.sign.toInt())
+//                 : math.Point<int>(-acceleration!.x.sign.toInt(), 0);
+//     state!.step(newDirection);
+//   }
 }
 
 class GameState {
   GameState(this.rows, this.columns) {
-    //playerLength = math.min(rows, columns) - 5;
     playerLength = 1;
   }
 

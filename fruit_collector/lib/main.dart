@@ -134,8 +134,8 @@ class GameScreen extends StatefulWidget {
 }
 
 class _GameScreenState extends State<GameScreen> {
-  static const int _fruitRows = 20;
-  static const int _fruitColumns = 20;
+  static const int _fruitRows = 40;
+  static const int _fruitColumns = 30;
   static const double _fruitCellSize = 10.0;
 
   List<double>? _accelerometerValues;
@@ -150,7 +150,6 @@ class _GameScreenState extends State<GameScreen> {
   void initState() {
     gyroscopeEvents.listen((GyroscopeEvent event) {
       print(event);
-
       x = event.x;
       y = event.y;
       z = event.z;
@@ -197,10 +196,6 @@ class _GameScreenState extends State<GameScreen> {
           child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Text(
-                  direction,
-                  style: TextStyle(fontSize: 30),
-                ),
                 Center(
                   child: DecoratedBox(
                     decoration: BoxDecoration(
