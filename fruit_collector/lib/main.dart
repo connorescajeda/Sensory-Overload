@@ -1,5 +1,7 @@
 //import 'dart:html';
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'player.dart';
@@ -28,7 +30,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Fruit Game'),
     );
   }
 }
@@ -54,19 +56,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -105,7 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
               'You have pushed the button this many times:',
             ),
             Text(
-              '$_counter',
+              'placeholder',
               style: Theme.of(context).textTheme.headline4,
             ),
           ],
@@ -138,13 +127,35 @@ class _GameScreenState extends State<GameScreen> {
   static const int _fruitColumns = 30;
   static const double _fruitCellSize = 10.0;
 
-  List<double>? _accelerometerValues;
-  List<double>? _userAccelerometerValues;
-  List<double>? _gyroscopeValues;
-  List<double>? _magnetometerValues;
-
   double x = 0, y = 0, z = 0;
   String direction = "none";
+
+// //https://www.flutterbeads.com/flutter-countdown-timer/#:~:text=Steps%20to%20add%20countdown%20timer,()%20to%20stop%20the%20timer.
+  Timer? countdownTimer;
+
+  Duration timerDuration = Duration(seconds: 60);
+
+  void startTimer() {
+    setState(() => timerDuration = Duration(seconds: 60));
+    countdownTimer =
+        Timer.periodic(Duration(seconds: 1), (_) => setCountDown());
+  }
+
+  void stopTimer() {
+    setState(() => countdownTimer!.cancel());
+  }
+
+  void setCountDown() {
+    const reduceSecondsBy = 1;
+    setState(() {
+      final seconds = timerDuration.inSeconds - reduceSecondsBy;
+      if (seconds < 0) {
+        stopTimer();
+      } else {
+        timerDuration = Duration(seconds: seconds);
+      }
+    });
+  }
 
   @override
   void initState() {
@@ -175,15 +186,8 @@ class _GameScreenState extends State<GameScreen> {
   Widget build(BuildContext context) {
     //goadrich snake sensor demo
 
-    final accelerometer =
-        _accelerometerValues?.map((double v) => v.toStringAsFixed(1)).toList();
-    final gyroscope =
-        _gyroscopeValues?.map((double v) => v.toStringAsFixed(1)).toList();
-    final userAccelerometer = _userAccelerometerValues
-        ?.map((double v) => v.toStringAsFixed(1))
-        .toList();
-    final magnetometer =
-        _magnetometerValues?.map((double v) => v.toStringAsFixed(1)).toList();
+    String strDigits(int n) => n.toString().padLeft(2, '0');
+    final seconds = strDigits(timerDuration.inSeconds.remainder(60));
 
     return Scaffold(
       appBar: AppBar(
@@ -196,6 +200,28 @@ class _GameScreenState extends State<GameScreen> {
           child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
+                Row(
+                  children: [
+                    ElevatedButton(
+                      onPressed: startTimer,
+                      child: const Text(
+                        'Play!',
+                        style: TextStyle(
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text('Time Remaining: $seconds'),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
                 Center(
                   child: DecoratedBox(
                     decoration: BoxDecoration(
