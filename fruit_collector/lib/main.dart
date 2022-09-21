@@ -81,7 +81,21 @@ class _MyHomePageState extends State<MyHomePage> {
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
+        leading: Builder(
+      builder: (BuildContext context) {
+        return IconButton(
+          icon: const Icon(Icons.settings),
+          onPressed: () {
+            Scaffold.of(context).openDrawer();
+          },
+          tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+      
+      );
+      },
+        ),
       ),
+      
+
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
@@ -124,6 +138,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ), 
       //https://docs.flutter.dev/cookbook/design/drawer
       drawer: Drawer(
+    
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
@@ -131,7 +146,9 @@ class _MyHomePageState extends State<MyHomePage> {
               decoration: BoxDecoration(
                 color: Colors.red,
               ),
-              child: Text('Settings'),
+              child: Text('App Preferences'),
+              
+              
             ),
             ListTile(
               title: const Text('Light Mode'),
@@ -167,12 +184,11 @@ class GameScreen extends StatefulWidget {
   const GameScreen({Key? key}) : super(key: key);
 
   @override
-  //State<GameScreen> createState() => _GameScreenState();
   _GameScreenState createState() => _GameScreenState();
 }
 
 class _GameScreenState extends State<GameScreen> {
-  static const int _fruitRows = 40;
+ static const int _fruitRows = 40;
   static const int _fruitColumns = 30;
   static const double _fruitCellSize = 10.0;
 
@@ -181,55 +197,6 @@ class _GameScreenState extends State<GameScreen> {
   List<double>? _gyroscopeValues;
   List<double>? _magnetometerValues;
 
-      x = event.x;
-      y = event.y;
-      z = event.z;
-
-      //rough calculation, you can use
-      //advance formula to calculate the orentation
-      if (x > 0.75) {
-        direction = "back";
-      } else if (x < -.75) {
-        direction = "forward";
-      } else if (y > 0) {
-        direction = "left";
-      } else if (y < 0) {
-        direction = "right";
-      }
-
-      setState(() {});
-    });
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Gyroscope Sensor in Flutter"),
-        backgroundColor: Colors.redAccent,
-      ),
-      body: Container(
-          alignment: Alignment.center,
-          padding: EdgeInsets.all(30),
-          child: Column(children: [
-            Text(
-              direction,
-              style: TextStyle(fontSize: 30),
-            )
-          ])),
-    );
-  }
-}
-
-class _GameScreen extends StatefulWidget {
-  const _GameScreen({Key? key}) : super(key: key);
-
-  @override
-  State<GameScreen> createState() => GameScreenState();
-}
-
-class GameScreenState extends State<GameScreen> {
   double x = 0, y = 0, z = 0;
   String direction = "none";
 
