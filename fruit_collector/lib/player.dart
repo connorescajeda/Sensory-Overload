@@ -211,7 +211,6 @@ class GameState {
     body.add(next);
     if (body.length > playerLength) body.removeAt(0);
     direction = newDirection ?? direction;
-    print("wtf is this");
     checkCollision();
   }
 

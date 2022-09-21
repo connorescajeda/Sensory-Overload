@@ -139,7 +139,8 @@ class _GameScreenState extends State<GameScreen> {
   //Duration timerDuration = Duration(seconds: 60);
 
   void startTimer() {
-    setState(() => globals.timerDuration = Duration(seconds: 60));
+    setState(() => globals.timerDuration = Duration(seconds: 120));
+    globals.points = 0;
     countdownTimer =
         Timer.periodic(Duration(seconds: 1), (_) => setCountDown());
   }
@@ -191,7 +192,7 @@ class _GameScreenState extends State<GameScreen> {
     //goadrich snake sensor demo
 
     String strDigits(int n) => n.toString().padLeft(2, '0');
-    final seconds = strDigits(globals.timerDuration.inSeconds.remainder(60));
+    final seconds = strDigits(globals.timerDuration.inSeconds.remainder(120));
     final pointTotal = globals.points;
 
     return Scaffold(
