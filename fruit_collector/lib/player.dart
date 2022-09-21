@@ -241,6 +241,7 @@ class GameState {
       if (fruitX.elementAt(i) == body.elementAt(0).x &&
           fruitY.elementAt(i) == body.elementAt(0).y) {
         globals.points += 1;
+        fruits.removeAt(i);
       }
     }
   }
