@@ -217,7 +217,7 @@ class GameState {
       fruitX.add(fruits.elementAt(i).x);
       fruitY.add(fruits.elementAt(i).y);
     }
-    print("test");
+    //print("test");
     for (var j = 0; j < fruitX.length; j++) {
       if (fruitX.elementAt(j) == body.elementAt(0).x &&
           fruitY.elementAt(j) == body.elementAt(0).y) {

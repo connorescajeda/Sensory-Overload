@@ -107,15 +107,10 @@ class _GameScreenState extends State<GameScreen> {
   //Duration timerDuration = Duration(seconds: 60);
   bool flag = false;
   void startTimer() {
-<<<<<<<
-    setState(() => globals.timerDuration = Duration(seconds: 30));
-    globals.points = 0;
-=======
     setState(() => globals.timerDuration =
         Duration(seconds: 90)); //this starts the timer countdown
     globals.points =
         0; //sets points to 0 because if we're starting the timer we're restarting the game
->>>>>>>
     countdownTimer =
         Timer.periodic(Duration(seconds: 1), (_) => setCountDown());
   }
