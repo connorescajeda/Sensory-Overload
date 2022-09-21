@@ -150,6 +150,7 @@ class _GameScreenState extends State<GameScreen> {
 
   void setCountDown() {
     const reduceSecondsBy = 1;
+
     setState(() {
       final seconds = globals.timerDuration.inSeconds - reduceSecondsBy;
       if (seconds < 0) {
@@ -191,6 +192,7 @@ class _GameScreenState extends State<GameScreen> {
 
     String strDigits(int n) => n.toString().padLeft(2, '0');
     final seconds = strDigits(globals.timerDuration.inSeconds.remainder(60));
+    final pointTotal = globals.points;
 
     return Scaffold(
       appBar: AppBar(
@@ -246,7 +248,7 @@ class _GameScreenState extends State<GameScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text('Points:'),
+                      Text('Points: $pointTotal'),
                     ],
                   ),
                 ),

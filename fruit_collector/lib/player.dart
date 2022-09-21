@@ -211,6 +211,8 @@ class GameState {
     body.add(next);
     if (body.length > playerLength) body.removeAt(0);
     direction = newDirection ?? direction;
+    print("wtf is this");
+    checkCollision();
   }
 
   void fruitCreation() {
@@ -221,6 +223,25 @@ class GameState {
         fruits.add(tmp);
       }
       check = true;
+    }
+  }
+
+  void checkCollision() {
+    List<int> fruitX = [];
+    List<int> fruitY = [];
+
+    for (var i = 0; i < fruitAmount; i++) {
+      fruitX.add(fruits.elementAt(i).x);
+      fruitY.add(fruits.elementAt(i).y);
+    }
+
+    //print(body.elementAt(0).x);
+    //print("test");
+    for (var i = 0; i < fruitX.length; i++) {
+      if (fruitX.elementAt(i) == body.elementAt(0).x &&
+          fruitY.elementAt(i) == body.elementAt(0).y) {
+        globals.points += 1;
+      }
     }
   }
 }
