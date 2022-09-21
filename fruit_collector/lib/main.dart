@@ -5,11 +5,15 @@ import 'globals.dart' as globals;
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'player.dart';
+import 'theme.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    const MyApp()
+    );
 }
 
 class MyApp extends StatelessWidget {
@@ -61,6 +65,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
+    
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -91,6 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
         child: Column(
+
           // Column is also a layout widget. It takes a list of children and
           // arranges them vertically. By default, it sizes itself to fit its
           // children horizontally, and tries to be as tall as its parent.
@@ -107,6 +113,16 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Container(
+              height: 200,
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                image: NetworkImage("https://www.deviantart.com/santirevecolepe/art/80-s-Neon-Grid-Blender-783879105"),fit:BoxFit.cover
+                 ),
+                   ),
+                   ),
+  
             const Text(
               'You have pushed the button this many times:',
             ),
@@ -145,7 +161,10 @@ class _MyHomePageState extends State<MyHomePage> {
             ListTile(
               title: const Text('Light Mode'),
               onTap: (){
+                theme: ThemeData(
+                  brightness: Brightness.light,
 
+                );
                 Navigator.pop(context);
               } ,
             ),
@@ -154,8 +173,6 @@ class _MyHomePageState extends State<MyHomePage> {
               title: const Text('Dark Mode'),
               onTap: (){
                 theme: ThemeData(
-                  primarySwatch: Colors.grey,
-                  primaryColor: Colors.blue,
                   brightness: Brightness.dark,
 
                 );
