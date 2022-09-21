@@ -137,9 +137,9 @@ class _GameScreenState extends State<GameScreen> {
   Timer? countdownTimer;
 
   //Duration timerDuration = Duration(seconds: 60);
-
+  bool flag = false;
   void startTimer() {
-    setState(() => globals.timerDuration = Duration(seconds: 90));
+    setState(() => globals.timerDuration = Duration(seconds: 30));
     globals.points = 0;
     countdownTimer =
         Timer.periodic(Duration(seconds: 1), (_) => setCountDown());
@@ -163,29 +163,7 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   @override
-  void initState() {
-    gyroscopeEvents.listen((GyroscopeEvent event) {
-      print(event);
-      x = event.x;
-      y = event.y;
-      z = event.z;
-
-      //rough calculation, you can use
-      //advance formula to calculate the orentation
-      if (x > 0) {
-        direction = "back";
-      } else if (x < 0) {
-        direction = "forward";
-      } else if (y > 0) {
-        direction = "left";
-      } else if (y < 0) {
-        direction = "right";
-      }
-
-      setState(() {});
-    });
-    super.initState();
-  }
+  void initState() {}
 
   @override
   Widget build(BuildContext context) {
@@ -194,6 +172,11 @@ class _GameScreenState extends State<GameScreen> {
     String strDigits(int n) => n.toString().padLeft(2, '0');
     final seconds = strDigits(globals.timerDuration.inSeconds.remainder(90));
     final pointTotal = globals.points;
+    Player game = Player(
+      rows: _fruitRows,
+      columns: _fruitColumns,
+      cellSize: _fruitCellSize,
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -236,11 +219,7 @@ class _GameScreenState extends State<GameScreen> {
                     child: SizedBox(
                       height: _fruitRows * _fruitCellSize,
                       width: _fruitColumns * _fruitCellSize,
-                      child: Player(
-                        rows: _fruitRows,
-                        columns: _fruitColumns,
-                        cellSize: _fruitCellSize,
-                      ),
+                      child: game,
                     ),
                   ),
                 ),
