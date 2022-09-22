@@ -11,9 +11,7 @@ import 'player.dart';
 import 'theme.dart';
 
 void main() {
-  runApp(
-    const MyApp()
-    );
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -25,15 +23,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         brightness: Brightness.light,
         primarySwatch: Colors.red,
       ),
@@ -65,7 +54,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -73,118 +61,97 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-        leading: Builder(
-      builder: (BuildContext context) {
-        return IconButton(
-          icon: const Icon(Icons.settings),
-          onPressed: () {
-            Scaffold.of(context).openDrawer();
-          },
-          tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-      
-      );
-      },
+        appBar: AppBar(
+          // Here we take the value from the MyHomePage object that was created by
+          // the App.build method, and use it to set our appbar title.
+          title: Text(widget.title),
+          leading: Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: const Icon(Icons.settings),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+              );
+            },
+          ),
         ),
-      ),
-      
-
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            TextButton(
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.black,
-                padding: const EdgeInsets.all(16.0),
-                textStyle: const TextStyle(fontSize: 12),
+        body: Center(
+          // Center is a layout widget. It takes a single child and positions it
+          // in the middle of the parent.
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextButton(
+                  key: const Key("Game Button"),
+                  style: TextButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    padding: const EdgeInsets.all(16.0),
+                    textStyle: const TextStyle(fontSize: 12),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const GameScreen(
+                                key: Key("Game Screen"),
+                              )),
+                    );
+                  },
+                  child: Text(
+                    'PLAY',
+                    style: Theme.of(context).textTheme.headlineLarge,
+                  )),
+              Container(
+                height: 200,
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                    // image: DecorationImage(
+                    //     image: NetworkImage(
+                    //         "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/9aaaf7a6-b1a5-40a3-8eb8-02712a91a568/dcyp8zl-e675430f-2807-4d7f-b4bd-acaf945ec0a9.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzlhYWFmN2E2LWIxYTUtNDBhMy04ZWI4LTAyNzEyYTkxYTU2OFwvZGN5cDh6bC1lNjc1NDMwZi0yODA3LTRkN2YtYjRiZC1hY2FmOTQ1ZWMwYTkucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.LQXDkZsOdq9kCEB55QYXnfeplFcHyoqeWxHA_C2S7ik"),
+                    //     fit: BoxFit.cover),
+                    ),
               ),
-                onPressed: (){
-                  Navigator.push(
-                    context, 
-                    MaterialPageRoute(builder: (context) => const GameScreen() ),
-                  
+            ],
+          ),
+        ),
+
+        //https://docs.flutter.dev/cookbook/design/drawer
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              const DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                ),
+                child: Text('App Preferences'),
+              ),
+              ListTile(
+                title: const Text('Light Mode'),
+                onTap: () {
+                  theme:
+                  ThemeData(
+                    brightness: Brightness.light,
+                  );
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                title: const Text('Dark Mode'),
+                onTap: () {
+                  theme:
+                  ThemeData(
+                    brightness: Brightness.dark,
                   );
 
+                  Navigator.pop(context);
                 },
-                child: Text('PLAY',style: Theme.of(context).textTheme.headlineLarge,)
               ),
-            
-            Container(
-              height: 200,
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                image: NetworkImage("https://www.deviantart.com/santirevecolepe/art/80-s-Neon-Grid-Blender-783879105"),fit:BoxFit.cover
-                 ),
-                   ),
-                   ),
-  
-          ],
-        ),
-      ),
-      );
-      //https://docs.flutter.dev/cookbook/design/drawer
-      drawer: Drawer(
-    
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.red,
-              ),
-              child: Text('App Preferences'),
-              
-              
-            ),
-            ListTile(
-              title: const Text('Light Mode'),
-              onTap: (){
-                theme: ThemeData(
-                  brightness: Brightness.light,
-
-                );
-                Navigator.pop(context);
-              } ,
-            ),
-
-            ListTile(
-              title: const Text('Dark Mode'),
-              onTap: (){
-                theme: ThemeData(
-                  brightness: Brightness.dark,
-
-                );
-                 
-                Navigator.pop(context);
-              },
-            ),
-          ],
-
-
-        ),
-      );
+            ],
+          ),
+        ));
   }
 }
 
@@ -196,7 +163,7 @@ class GameScreen extends StatefulWidget {
 }
 
 class _GameScreenState extends State<GameScreen> {
- static const int _fruitRows = 40;
+  static const int _fruitRows = 40;
   static const int _fruitColumns = 30;
   static const double _fruitCellSize = 10.0;
 
@@ -217,6 +184,11 @@ class _GameScreenState extends State<GameScreen> {
 
   void stopTimer() {
     setState(() => countdownTimer!.cancel());
+  }
+  void dispose() {
+    super.dispose();
+    countdownTimer?.cancel();
+    
   }
 
   void setCountDown() {
@@ -250,18 +222,19 @@ class _GameScreenState extends State<GameScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Gyroscope Sensor in Flutter"),
+        title: Text("Get That Fruit!"),
         backgroundColor: Colors.redAccent,
       ),
       body: Container(
           alignment: Alignment.center,
-          padding: EdgeInsets.all(30),
+          padding: EdgeInsets.all(20),
           child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Row(
                   children: [
                     ElevatedButton(
+                      key: const Key("Start Button"),
                       onPressed: startTimer,
                       child: const Text(
                         'Start!',
@@ -275,7 +248,9 @@ class _GameScreenState extends State<GameScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text('Time Remaining: $seconds'),
+                          Text(
+                              key: const Key("seconds"),
+                              'Time Remaining: $seconds'),
                         ],
                       ),
                     ),

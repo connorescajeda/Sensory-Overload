@@ -32,6 +32,7 @@ class Player extends StatefulWidget {
       PlayerState(rows, columns, cellSize, fruitAmount);
 }
 
+// Creates the game field
 class PlayerBoardPainter extends CustomPainter {
   PlayerBoardPainter(this.state, this.cellSize);
 
@@ -83,7 +84,6 @@ class PlayerState extends State<Player> {
   double cellSize;
   GameState? state;
   AccelerometerEvent? acceleration;
-  late StreamSubscription<AccelerometerEvent> _streamSubscription;
   late Timer _timer;
   late StreamSubscription<GyroscopeEvent> subscription;
 
@@ -95,8 +95,8 @@ class PlayerState extends State<Player> {
   @override
   void dispose() {
     super.dispose();
-    _streamSubscription.cancel();
     _timer.cancel();
+    subscription.cancel();
   }
 
   String direction = "none";
@@ -104,6 +104,8 @@ class PlayerState extends State<Player> {
   double x = 0, y = 0, z = 0;
 
   @override
+
+  // This is the method that detects the coordinates of the gyroscope movement and picks the direction.
   void initState() {
     super.initState();
 
@@ -149,6 +151,7 @@ class PlayerState extends State<Player> {
     });
   }
 
+  // Creates the coordinates to give to the game state for which way the player should move
   void _step() {
     math.Point<int> newDirection = const math.Point<int>(0, 0);
 
@@ -186,6 +189,7 @@ class GameState {
   List<math.Point<int>> body = <math.Point<int>>[const math.Point<int>(0, 0)];
   math.Point<int> direction = const math.Point<int>(1, 0);
 
+  // This method is what is directly responsible for moving the square on the board
   void step(math.Point<int>? newDirection) {
     var next = body.last + direction;
     next = math.Point<int>(next.x % columns, next.y % rows);
@@ -196,6 +200,7 @@ class GameState {
     checkCollision();
   }
 
+  //Creates all of the fruit
   void fruitCreation() {
     if (fruits.length < 4) {
       for (var i = 0; i < fruitAmount; i++) {
@@ -206,6 +211,7 @@ class GameState {
     }
   }
 
+  //Checks if our player has hit a fruit.
   void checkCollision() {
     List<int> fruitX = [];
     List<int> fruitY = [];
