@@ -113,6 +113,23 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            TextButton(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.black,
+                padding: const EdgeInsets.all(16.0),
+                textStyle: const TextStyle(fontSize: 12),
+              ),
+                onPressed: (){
+                  Navigator.push(
+                    context, 
+                    MaterialPageRoute(builder: (context) => const GameScreen() ),
+                  
+                  );
+
+                },
+                child: Text('PLAY',style: Theme.of(context).textTheme.headlineLarge,)
+              ),
+            
             Container(
               height: 200,
               width: double.infinity,
@@ -123,27 +140,10 @@ class _MyHomePageState extends State<MyHomePage> {
                    ),
                    ),
   
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              'placeholder',
-              style: Theme.of(context).textTheme.headline4,
-            ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          globals.timerDuration = Duration(seconds: 0);
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const GameScreen()),
-          );
-        },
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), 
+      );
       //https://docs.flutter.dev/cookbook/design/drawer
       drawer: Drawer(
     
@@ -184,8 +184,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
         ),
-      ),
-    );
+      );
   }
 }
 
