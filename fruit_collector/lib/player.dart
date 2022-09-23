@@ -167,7 +167,8 @@ class PlayerState extends State<Player> {
     final seconds = globals.timerDuration.inSeconds;
 
     if (seconds < 1) {
-      newDirection = const math.Point<int>(0, 0);
+      newDirection = const math.Point<int>(0,
+          0); //if the game time has run out, the player object is unable to move
     }
 
     state!.step(newDirection);
@@ -212,19 +213,22 @@ class GameState {
 
   //Checks if our player has hit a fruit.
   void checkCollision() {
+    //This method checks to see if the player has collided or "ran over" a fruit
     List<int> fruitX = [];
     List<int> fruitY = [];
 
     for (var i = 0; i < fruits.length; i++) {
+      //this makes two lists containing the x and y's of each fruit
       fruitX.add(fruits.elementAt(i).x);
       fruitY.add(fruits.elementAt(i).y);
     }
-    print("test");
+    //print("test");
     for (var j = 0; j < fruitX.length; j++) {
       if (fruitX.elementAt(j) == body.elementAt(0).x &&
           fruitY.elementAt(j) == body.elementAt(0).y) {
         globals.points += 1;
         fruits.removeAt(j);
+        //matches the current x,y of the player's body
       }
     }
   }
