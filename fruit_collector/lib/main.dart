@@ -216,6 +216,7 @@ class _GameScreenState extends State<GameScreen> {
     final seconds = strDigits(globals.timerDuration.inSeconds.remainder(90));
     final pointTotal = globals.points;
     Player game = Player(
+      key: const Key("Game"),
       rows: _fruitRows,
       columns: _fruitColumns,
       cellSize: _fruitCellSize,
