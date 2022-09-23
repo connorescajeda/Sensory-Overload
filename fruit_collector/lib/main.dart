@@ -1,5 +1,7 @@
 //import 'dart:html';
 
+import 'dart:html';
+
 import 'globals.dart' as globals;
 
 import 'dart:async';
@@ -7,6 +9,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sensors_plus/sensors_plus.dart';
+import 'package:animated_background/animated_background.dart';
 import 'player.dart';
 import 'theme.dart';
 
@@ -21,6 +24,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         brightness: Brightness.light,
@@ -51,7 +55,8 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage>{
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -154,7 +159,6 @@ class _MyHomePageState extends State<MyHomePage> {
         ));
   }
 }
-
 class GameScreen extends StatefulWidget {
   const GameScreen({Key? key}) : super(key: key);
 

@@ -31,3 +31,19 @@ class ThemeNotifier with ChangeNotifier {
     notifyListeners();
   }
 }
+// vsync: this,
+         // behaviour: RandomParticleBehaviour(
+           // options: const ParticleOptions(
+            //  baseColor: Colors.greenAccent,
+           //   spawnOpacity: 0.0,
+            //  opacityChangeRate: 0.25,
+            //  minOpacity: 0.1,
+             // maxOpacity: 0.4,
+             // particleCount: 70,
+             // spawnMaxRadius: 15.0,
+             // spawnMaxSpeed: 100.0,
+              //spawnMinSpeed: 30,
+             // spawnMinRadius: 7.0,
+
+            //) 
+           // ),
