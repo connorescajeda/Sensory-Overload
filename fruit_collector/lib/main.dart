@@ -36,15 +36,6 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -176,8 +167,10 @@ class _GameScreenState extends State<GameScreen> {
   //Duration timerDuration = Duration(seconds: 60);
   bool flag = false;
   void startTimer() {
-    setState(() => globals.timerDuration = Duration(seconds: 30));
-    globals.points = 0;
+    setState(() => globals.timerDuration =
+        Duration(seconds: 90)); //this starts the timer countdown
+    globals.points =
+        0; //sets points to 0 because if we're starting the timer we're restarting the game
     countdownTimer =
         Timer.periodic(Duration(seconds: 1), (_) => setCountDown());
   }
@@ -192,6 +185,7 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void setCountDown() {
+    //actually counting down the timer
     const reduceSecondsBy = 1;
 
     setState(() {
