@@ -7,30 +7,44 @@ import 'globals.dart' as globals;
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:sensors_plus/sensors_plus.dart';
-import 'package:animated_background/animated_background.dart';
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'player.dart';
-import 'theme.dart';
 
 void main() {
   runApp(const MyApp());
+  
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+  
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
+     
+   // https://pub.dev/packages/adaptive_theme#Changing-Theme-Mode
+
+
+    return AdaptiveTheme(
+      light: ThemeData(
         brightness: Brightness.light,
         primarySwatch: Colors.red,
       ),
-      home: const MyHomePage(title: 'Fruit Game'),
+      dark: ThemeData(
+        brightness: Brightness.dark,
+        primarySwatch: Colors.red,
+        ),
+      initial: AdaptiveThemeMode.light,
+      builder: (theme, darkTheme) => MaterialApp(
+        title: 'Flutter Demo',
+        theme: theme,
+        darkTheme:darkTheme,
+        home: const MyHomePage(
+          title: 'Fruit Game',
+        ),
+    )
     );
   }
 }
@@ -38,7 +52,7 @@ class MyApp extends StatelessWidget {
 // https://docs.flutter.dev/cookbook/navigation/navigation-basics
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+  const MyHomePage({Key? key, required this.title,}) : super(key: key);
 
   final String title;
 
@@ -47,6 +61,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage>{
+  ThemeMode themeMode = ThemeMode.system;
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage>{
               TextButton(
                   key: const Key("Game Button"),
                   style: TextButton.styleFrom(
-                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.greenAccent, //backgroundColor: Colors.white,
                     padding: const EdgeInsets.all(16.0),
                     textStyle: const TextStyle(fontSize: 12),
                   ),
@@ -96,22 +111,16 @@ class _MyHomePageState extends State<MyHomePage>{
                     );
                   },
                   child: Text(
-                    'PLAY',
+                    'PLAY', 
                     style: Theme.of(context).textTheme.headlineLarge,
-                  )),
-              Container(
-                height: 200,
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                    // image: DecorationImage(
-                    //     image: NetworkImage(
-                    //         "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/9aaaf7a6-b1a5-40a3-8eb8-02712a91a568/dcyp8zl-e675430f-2807-4d7f-b4bd-acaf945ec0a9.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzlhYWFmN2E2LWIxYTUtNDBhMy04ZWI4LTAyNzEyYTkxYTU2OFwvZGN5cDh6bC1lNjc1NDMwZi0yODA3LTRkN2YtYjRiZC1hY2FmOTQ1ZWMwYTkucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.LQXDkZsOdq9kCEB55QYXnfeplFcHyoqeWxHA_C2S7ik"),
-                    //     fit: BoxFit.cover),
-                    ),
-              ),
+                    
+                    )
+                  ),
+              
             ],
+          )
           ),
-        ),
+        
 
         //https://docs.flutter.dev/cookbook/design/drawer
         drawer: Drawer(
@@ -127,20 +136,14 @@ class _MyHomePageState extends State<MyHomePage>{
               ListTile(
                 title: const Text('Light Mode'),
                 onTap: () {
-                  theme:
-                  ThemeData(
-                    brightness: Brightness.light,
-                  );
+                  AdaptiveTheme.of(context).setLight();
                   Navigator.pop(context);
                 },
               ),
               ListTile(
                 title: const Text('Dark Mode'),
                 onTap: () {
-                  theme:
-                  ThemeData(
-                    brightness: Brightness.dark,
-                  );
+                  AdaptiveTheme.of(context).setDark();
 
                   Navigator.pop(context);
                 },
