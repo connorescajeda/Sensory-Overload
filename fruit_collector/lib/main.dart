@@ -1,7 +1,3 @@
-//import 'dart:html';
-
-import 'dart:html';
-
 import 'globals.dart' as globals;
 
 import 'dart:async';
@@ -10,49 +6,48 @@ import 'package:flutter/material.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'player.dart';
+//import 'dart:html';
 
 void main() {
   runApp(const MyApp());
-  
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-  
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-     
-   // https://pub.dev/packages/adaptive_theme#Changing-Theme-Mode
-
+    // https://pub.dev/packages/adaptive_theme#Changing-Theme-Mode
 
     return AdaptiveTheme(
-      light: ThemeData(
-        brightness: Brightness.light,
-        primarySwatch: Colors.red,
-      ),
-      dark: ThemeData(
-        brightness: Brightness.dark,
-        primarySwatch: Colors.red,
+        light: ThemeData(
+          brightness: Brightness.light,
+          primarySwatch: Colors.red,
         ),
-      initial: AdaptiveThemeMode.light,
-      builder: (theme, darkTheme) => MaterialApp(
-        title: 'Flutter Demo',
-        theme: theme,
-        darkTheme:darkTheme,
-        home: const MyHomePage(
-          title: 'Fruit Game',
+        dark: ThemeData(
+          brightness: Brightness.dark,
+          primarySwatch: Colors.red,
         ),
-    )
-    );
+        initial: AdaptiveThemeMode.light,
+        builder: (theme, darkTheme) => MaterialApp(
+              title: 'Flutter Demo',
+              theme: theme,
+              darkTheme: darkTheme,
+              home: const MyHomePage(
+                title: 'Fruit Game',
+              ),
+            ));
   }
 }
 
 // https://docs.flutter.dev/cookbook/navigation/navigation-basics
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title,}) : super(key: key);
+  const MyHomePage({
+    Key? key,
+    required this.title,
+  }) : super(key: key);
 
   final String title;
 
@@ -60,7 +55,7 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage>{
+class _MyHomePageState extends State<MyHomePage> {
   ThemeMode themeMode = ThemeMode.system;
 
   @override
@@ -89,38 +84,34 @@ class _MyHomePageState extends State<MyHomePage>{
           ),
         ),
         body: Center(
-          // Center is a layout widget. It takes a single child and positions it
-          // in the middle of the parent.
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextButton(
-                  key: const Key("Game Button"),
-                  style: TextButton.styleFrom(
-                    foregroundColor: Colors.greenAccent, //backgroundColor: Colors.white,
-                    padding: const EdgeInsets.all(16.0),
-                    textStyle: const TextStyle(fontSize: 12),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const GameScreen(
-                                key: Key("Game Screen"),
-                              )),
-                    );
-                  },
-                  child: Text(
-                    'PLAY', 
-                    style: Theme.of(context).textTheme.headlineLarge,
-                    
-                    )
-                  ),
-              
-            ],
-          )
-          ),
-        
+            // Center is a layout widget. It takes a single child and positions it
+            // in the middle of the parent.
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextButton(
+                key: const Key("Game Button"),
+                style: TextButton.styleFrom(
+                  backgroundColor:
+                      Colors.greenAccent, //backgroundColor: Colors.white,
+                  padding: const EdgeInsets.all(16.0),
+                  textStyle: const TextStyle(fontSize: 12),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const GameScreen(
+                              key: Key("Game Screen"),
+                            )),
+                  );
+                },
+                child: Text(
+                  'PLAY',
+                  style: Theme.of(context).textTheme.headlineLarge,
+                )),
+          ],
+        )),
 
         //https://docs.flutter.dev/cookbook/design/drawer
         drawer: Drawer(
@@ -153,6 +144,7 @@ class _MyHomePageState extends State<MyHomePage>{
         ));
   }
 }
+
 class GameScreen extends StatefulWidget {
   const GameScreen({Key? key}) : super(key: key);
 
@@ -185,10 +177,10 @@ class _GameScreenState extends State<GameScreen> {
   void stopTimer() {
     setState(() => countdownTimer!.cancel());
   }
+
   void dispose() {
     super.dispose();
     countdownTimer?.cancel();
-    
   }
 
   void setCountDown() {
