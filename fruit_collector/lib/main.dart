@@ -91,7 +91,7 @@ class _MyHomePageState extends State<MyHomePage>{
               TextButton(
                   key: const Key("Game Button"),
                   style: TextButton.styleFrom(
-                    backgroundColor: Colors.black,
+                    backgroundColor: Colors.white,
                     padding: const EdgeInsets.all(16.0),
                     textStyle: const TextStyle(fontSize: 12),
                   ),
