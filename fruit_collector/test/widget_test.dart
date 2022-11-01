@@ -139,8 +139,18 @@ void main() {
     globals.points = 0;
     await tester.pump();
     expect(globals.highScore, 1);
+  });
 
-    //displays high score on home screen
-    expect(find.byKey(const Key("High Score Text")), '1');
+  testWidgets('High Score Display', (WidgetTester tester) async {
+    // tests if the high score is displayed correctly
+
+    // given a high score of 3
+    globals.highScore = 3;
+
+    //builds and tests display
+    await tester
+        .pumpWidget(const MaterialApp(home: MyHomePage(title: "Fruit Game")));
+    expect(find.byKey(const Key("High Score Text")), findsOneWidget);
+    expect(find.text("High Score: 3"), findsOneWidget);
   });
 }
