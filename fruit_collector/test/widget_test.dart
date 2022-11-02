@@ -115,4 +115,42 @@ void main() {
 
     expect(globals.points, 1);
   });
+
+  testWidgets('High Score', (WidgetTester tester) async {
+    await tester
+        .pumpWidget(const MaterialApp(home: MyHomePage(title: "Fruit Game")));
+
+    //high score starts at 0
+    expect(globals.highScore, 0);
+
+    //high points score should set a new high score
+    final player = Player();
+    final player_s = PlayerState(
+        player.rows, player.columns, player.cellSize, player.fruitAmount);
+    final game_s = GameState(player.rows, player.columns, player.fruitAmount);
+
+    game_s.body = <math.Point<int>>[const math.Point<int>(2, 2)];
+    game_s.checkCollision();
+    expect(globals.points, 1);
+    expect(globals.highScore, 1);
+    await tester.pump();
+
+    //this high score is independent of points in other rounds
+    globals.points = 0;
+    await tester.pump();
+    expect(globals.highScore, 1);
+  });
+
+  testWidgets('High Score Display', (WidgetTester tester) async {
+    // tests if the high score is displayed correctly
+
+    // given a high score of 3
+    globals.highScore = 3;
+
+    //builds and tests display
+    await tester
+        .pumpWidget(const MaterialApp(home: MyHomePage(title: "Fruit Game")));
+    expect(find.byKey(const Key("High Score Text")), findsOneWidget);
+    expect(find.text("High Score: 3"), findsOneWidget);
+  });
 }

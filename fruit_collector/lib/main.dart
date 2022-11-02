@@ -89,6 +89,12 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Container(
+                padding: const EdgeInsets.only(bottom: 150),
+                child:
+                    //displaying the high score
+                    Text(('High Score: ${globals.highScore}'),
+                        key: const Key("High Score Text"), textScaleFactor: 2)),
             TextButton(
                 key: const Key("Game Button"),
                 style: TextButton.styleFrom(

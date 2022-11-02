@@ -227,6 +227,11 @@ class GameState {
       if (fruitX.elementAt(j) == body.elementAt(0).x &&
           fruitY.elementAt(j) == body.elementAt(0).y) {
         globals.points += 1;
+
+        //if the current score is greater than high score, you have a new high score!
+        if (globals.points > globals.highScore) {
+          globals.highScore = globals.points;
+        }
         fruits.removeAt(j);
         //matches the current x,y of the player's body
       }
