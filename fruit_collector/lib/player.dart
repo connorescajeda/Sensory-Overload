@@ -113,19 +113,19 @@ class PlayerState extends State<Player> {
 
       //rough calculation, you can use
       //advance formula to calculate the orentation
-      if (x > 0) {
+      if (x > 1) {
         direction = "back";
         pastDir = direction;
-      } else if (x < 0) {
+      } else if (x < -1) {
         direction = "forward";
         pastDir = direction;
-      } else if (y > 0) {
+      } else if (y > 1) {
         direction = "left";
         pastDir = direction;
-      } else if (y < 0) {
+      } else if (y < -1) {
         direction = "right";
         pastDir = direction;
-      } else if (x == 0) {
+      } else {
         direction = pastDir;
       }
 

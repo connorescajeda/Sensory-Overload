@@ -66,6 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
+    var highScore = globals.highScore;
     return Scaffold(
         appBar: AppBar(
           // Here we take the value from the MyHomePage object that was created by
@@ -93,7 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 padding: const EdgeInsets.only(bottom: 150),
                 child:
                     //displaying the high score
-                    Text(('High Score: ${globals.highScore}'),
+                    Text(('High Score: ${highScore}'),
                         key: const Key("High Score Text"), textScaleFactor: 2)),
             TextButton(
                 key: const Key("Game Button"),
@@ -181,6 +182,7 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void stopTimer() {
+    print("high score: ${globals.highScore}");
     setState(() => countdownTimer!.cancel());
   }
 
@@ -195,7 +197,7 @@ class _GameScreenState extends State<GameScreen> {
 
     setState(() {
       final seconds = globals.timerDuration.inSeconds - reduceSecondsBy;
-      if (seconds < 0) {
+      if (seconds == 0) {
         stopTimer();
       } else {
         globals.timerDuration = Duration(seconds: seconds);
@@ -213,6 +215,7 @@ class _GameScreenState extends State<GameScreen> {
     String strDigits(int n) => n.toString().padLeft(2, '0');
     final seconds = strDigits(globals.timerDuration.inSeconds.remainder(90));
     final pointTotal = globals.points;
+
     Player game = Player(
       key: const Key("Game"),
       rows: _fruitRows,

@@ -117,6 +117,8 @@ void main() {
   });
 
   testWidgets('High Score', (WidgetTester tester) async {
+    //for some reason, this requires to be run on its own instead of all the tests at once.
+
     await tester
         .pumpWidget(const MaterialApp(home: MyHomePage(title: "Fruit Game")));
 
