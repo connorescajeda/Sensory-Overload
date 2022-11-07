@@ -62,6 +62,10 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   ThemeMode themeMode = ThemeMode.system;
 
+  void reload() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -117,9 +121,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const GameScreen(
-                              key: Key("Game Screen"),
-                            )),
+                        builder: (context) => GameScreen(
+                            key: Key("Game Screen"), onreload: reload)),
                   );
                 },
                 child: Text(
@@ -161,8 +164,12 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
+typedef HotReload = Function();
+
 class GameScreen extends StatefulWidget {
-  const GameScreen({Key? key}) : super(key: key);
+  GameScreen({Key? key, required this.onreload}) : super(key: key);
+
+  final HotReload onreload;
 
   @override
   _GameScreenState createState() => _GameScreenState();
@@ -183,7 +190,7 @@ class _GameScreenState extends State<GameScreen> {
   bool flag = false;
   void startTimer() {
     setState(() => globals.timerDuration =
-        Duration(seconds: 90)); //this starts the timer countdown
+        Duration(seconds: 20)); //this starts the timer countdown
     globals.points =
         0; //sets points to 0 because if we're starting the timer we're restarting the game
     countdownTimer =
@@ -192,8 +199,9 @@ class _GameScreenState extends State<GameScreen> {
 
   void stopTimer() {
     // printing here gives an ACCURATE update when game is over
-    //print("high score in stop timer: ${globals.highScore}");
+    print("high score after timer stops: ${globals.highScore}");
     setState(() => countdownTimer!.cancel());
+    widget.onreload();
   }
 
   void dispose() {

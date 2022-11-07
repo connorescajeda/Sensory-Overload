@@ -42,7 +42,7 @@ class PlayerBoardPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final blackLine = Paint()..color = Colors.black;
     final blackFilled = Paint()
-      ..color = Colors.blue
+      ..color = Colors.lightBlue
       ..style = PaintingStyle.fill;
 
     final fruitFilled = Paint()
