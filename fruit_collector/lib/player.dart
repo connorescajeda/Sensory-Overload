@@ -42,7 +42,7 @@ class PlayerBoardPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final blackLine = Paint()..color = Colors.black;
     final blackFilled = Paint()
-      ..color = Colors.black
+      ..color = Colors.lightBlue
       ..style = PaintingStyle.fill;
 
     final fruitFilled = Paint()
@@ -113,19 +113,19 @@ class PlayerState extends State<Player> {
 
       //rough calculation, you can use
       //advance formula to calculate the orentation
-      if (x > 0) {
+      if (x > 1) {
         direction = "back";
         pastDir = direction;
-      } else if (x < 0) {
+      } else if (x < -1) {
         direction = "forward";
         pastDir = direction;
-      } else if (y > 0) {
+      } else if (y > 1) {
         direction = "left";
         pastDir = direction;
-      } else if (y < 0) {
+      } else if (y < -1) {
         direction = "right";
         pastDir = direction;
-      } else if (x == 0) {
+      } else {
         direction = pastDir;
       }
 
@@ -227,6 +227,11 @@ class GameState {
       if (fruitX.elementAt(j) == body.elementAt(0).x &&
           fruitY.elementAt(j) == body.elementAt(0).y) {
         globals.points += 1;
+
+        //if the current score is greater than high score, you have a new high score!
+        if (globals.points > globals.highScore) {
+          globals.highScore = globals.points;
+        }
         fruits.removeAt(j);
         //matches the current x,y of the player's body
       }

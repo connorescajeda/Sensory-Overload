@@ -5,11 +5,15 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'globals.dart';
 import 'player.dart';
+import 'package:flutter/services.dart';
 //import 'dart:html';
 
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((value) => runApp(MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -58,6 +62,10 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   ThemeMode themeMode = ThemeMode.system;
 
+  void reload() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -66,6 +74,12 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
+
+    // THIS VARIABLE SHOULD UPDATE THE HIGH SCORE BUT IT'S NOT RELOADING!
+    var _highScore = globals.highScore;
+
+    print("this is the new high score: ${highScore.toString()}");
+
     return Scaffold(
         appBar: AppBar(
           // Here we take the value from the MyHomePage object that was created by
@@ -89,6 +103,12 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Container(
+                padding: const EdgeInsets.only(bottom: 150),
+                child:
+                    //displaying the high score
+                    Text(('High Score: ${_highScore}'),
+                        key: const Key("High Score Text"), textScaleFactor: 2)),
             TextButton(
                 key: const Key("Game Button"),
                 style: TextButton.styleFrom(
@@ -101,9 +121,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const GameScreen(
-                              key: Key("Game Screen"),
-                            )),
+                        builder: (context) => GameScreen(
+                            key: Key("Game Screen"), onreload: reload)),
                   );
                 },
                 child: Text(
@@ -145,8 +164,12 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
+typedef HotReload = Function();
+
 class GameScreen extends StatefulWidget {
-  const GameScreen({Key? key}) : super(key: key);
+  GameScreen({Key? key, required this.onreload}) : super(key: key);
+
+  final HotReload onreload;
 
   @override
   _GameScreenState createState() => _GameScreenState();
@@ -160,14 +183,14 @@ class _GameScreenState extends State<GameScreen> {
   double x = 0, y = 0, z = 0;
   String direction = "none";
 
-// //https://www.flutterbeads.com/flutter-countdown-timer/#:~:text=Steps%20to%20add%20countdown%20timer,()%20to%20stop%20the%20timer.
+  // //https://www.flutterbeads.com/flutter-countdown-timer/#:~:text=Steps%20to%20add%20countdown%20timer,()%20to%20stop%20the%20timer.
   Timer? countdownTimer;
 
   //Duration timerDuration = Duration(seconds: 60);
   bool flag = false;
   void startTimer() {
     setState(() => globals.timerDuration =
-        Duration(seconds: 90)); //this starts the timer countdown
+        Duration(seconds: 20)); //this starts the timer countdown
     globals.points =
         0; //sets points to 0 because if we're starting the timer we're restarting the game
     countdownTimer =
@@ -175,7 +198,10 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void stopTimer() {
+    // printing here gives an ACCURATE update when game is over
+    print("high score after timer stops: ${globals.highScore}");
     setState(() => countdownTimer!.cancel());
+    widget.onreload();
   }
 
   void dispose() {
@@ -189,7 +215,7 @@ class _GameScreenState extends State<GameScreen> {
 
     setState(() {
       final seconds = globals.timerDuration.inSeconds - reduceSecondsBy;
-      if (seconds < 0) {
+      if (seconds == 0) {
         stopTimer();
       } else {
         globals.timerDuration = Duration(seconds: seconds);
@@ -207,6 +233,10 @@ class _GameScreenState extends State<GameScreen> {
     String strDigits(int n) => n.toString().padLeft(2, '0');
     final seconds = strDigits(globals.timerDuration.inSeconds.remainder(90));
     final pointTotal = globals.points;
+
+    // printing high score here gives ACCURATE updates every second.
+    //print("high score: ${globals.highScore}");
+
     Player game = Player(
       key: const Key("Game"),
       rows: _fruitRows,
