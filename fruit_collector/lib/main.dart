@@ -3,17 +3,14 @@ import 'globals.dart' as globals;
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:sensors_plus/sensors_plus.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'globals.dart';
 import 'player.dart';
 import 'package:flutter/services.dart';
-//import 'dart:html';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-      .then((value) => runApp(MyApp()));
+      .then((value) => runApp(const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -35,12 +32,10 @@ class MyApp extends StatelessWidget {
         ),
         initial: AdaptiveThemeMode.light,
         builder: (theme, darkTheme) => MaterialApp(
-              title: 'Flutter Demo',
+              title: 'Fruit Game!',
               theme: theme,
               darkTheme: darkTheme,
-              home: const MyHomePage(
-                title: 'Fruit Game',
-              ),
+              home: MyHomePage(),
             ));
   }
 }
@@ -50,10 +45,7 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({
     Key? key,
-    required this.title,
   }) : super(key: key);
-
-  final String title;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -76,15 +68,21 @@ class _MyHomePageState extends State<MyHomePage> {
     // than having to individually change instances of widgets.
 
     // THIS VARIABLE SHOULD UPDATE THE HIGH SCORE BUT IT'S NOT RELOADING!
-    var _highScore = globals.highScore;
+    var highScore = globals.highScore;
 
-    print("this is the new high score: ${highScore.toString()}");
+    TextStyle titleTextStyle = const TextStyle(
+        color: Color.fromARGB(255, 83, 218, 153),
+        fontWeight: FontWeight.bold,
+        fontSize: 24.0);
+    Color redColor = const Color.fromARGB(255, 239, 79, 79);
+    Color greenColor = const Color.fromARGB(255, 83, 218, 153);
 
     return Scaffold(
         appBar: AppBar(
           // Here we take the value from the MyHomePage object that was created by
           // the App.build method, and use it to set our appbar title.
-          title: Text(widget.title),
+          title: Text("Fruit Game!", style: titleTextStyle),
+          backgroundColor: redColor,
           leading: Builder(
             builder: (BuildContext context) {
               return IconButton(
@@ -107,13 +105,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 padding: const EdgeInsets.only(bottom: 150),
                 child:
                     //displaying the high score
-                    Text(('High Score: ${_highScore}'),
+                    Text(('High Score: $highScore'),
                         key: const Key("High Score Text"), textScaleFactor: 2)),
             TextButton(
                 key: const Key("Game Button"),
                 style: TextButton.styleFrom(
-                  backgroundColor:
-                      Colors.greenAccent, //backgroundColor: Colors.white,
+                  backgroundColor: greenColor,
                   padding: const EdgeInsets.all(16.0),
                   textStyle: const TextStyle(fontSize: 12),
                 ),
@@ -122,12 +119,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => GameScreen(
-                            key: Key("Game Screen"), onreload: reload)),
+                            key: const Key("Game Screen"), onreload: reload)),
                   );
                 },
-                child: Text(
+                child: const Text(
                   'PLAY',
-                  style: Theme.of(context).textTheme.headlineLarge,
+                  style: TextStyle(color: Colors.white, fontSize: 60),
                 )),
           ],
         )),
@@ -137,21 +134,22 @@ class _MyHomePageState extends State<MyHomePage> {
           child: ListView(
             padding: EdgeInsets.zero,
             children: [
-              const DrawerHeader(
+              DrawerHeader(
                 decoration: BoxDecoration(
-                  color: Colors.red,
+                  color: redColor,
                 ),
-                child: Text('App Preferences'),
+                child: Text('App Preferences',
+                    style: TextStyle(color: greenColor, fontSize: 40)),
               ),
               ListTile(
-                title: const Text('Light Mode'),
+                title: const Text('Light Mode', style: TextStyle(fontSize: 20)),
                 onTap: () {
                   AdaptiveTheme.of(context).setLight();
                   Navigator.pop(context);
                 },
               ),
               ListTile(
-                title: const Text('Dark Mode'),
+                title: const Text('Dark Mode', style: TextStyle(fontSize: 20)),
                 onTap: () {
                   AdaptiveTheme.of(context).setDark();
 
@@ -166,16 +164,20 @@ class _MyHomePageState extends State<MyHomePage> {
 
 typedef HotReload = Function();
 
+// ignore: must_be_immutable
 class GameScreen extends StatefulWidget {
   GameScreen({Key? key, required this.onreload}) : super(key: key);
 
   final HotReload onreload;
 
+  Color redColor = const Color.fromARGB(255, 239, 79, 79);
+  Color greenColor = const Color.fromARGB(255, 83, 218, 153);
+
   @override
-  _GameScreenState createState() => _GameScreenState();
+  GameScreenState createState() => GameScreenState();
 }
 
-class _GameScreenState extends State<GameScreen> {
+class GameScreenState extends State<GameScreen> {
   static const int _fruitRows = 40;
   static const int _fruitColumns = 30;
   static const double _fruitCellSize = 10.0;
@@ -190,11 +192,11 @@ class _GameScreenState extends State<GameScreen> {
   bool flag = false;
   void startTimer() {
     setState(() => globals.timerDuration =
-        Duration(seconds: 20)); //this starts the timer countdown
+        const Duration(seconds: 20)); //this starts the timer countdown
     globals.points =
         0; //sets points to 0 because if we're starting the timer we're restarting the game
     countdownTimer =
-        Timer.periodic(Duration(seconds: 1), (_) => setCountDown());
+        Timer.periodic(const Duration(seconds: 1), (_) => setCountDown());
   }
 
   void stopTimer() {
@@ -204,6 +206,7 @@ class _GameScreenState extends State<GameScreen> {
     widget.onreload();
   }
 
+  @override
   void dispose() {
     super.dispose();
     countdownTimer?.cancel();
@@ -224,7 +227,9 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   @override
-  void initState() {}
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -233,6 +238,12 @@ class _GameScreenState extends State<GameScreen> {
     String strDigits(int n) => n.toString().padLeft(2, '0');
     final seconds = strDigits(globals.timerDuration.inSeconds.remainder(90));
     final pointTotal = globals.points;
+
+    TextStyle titleTextStyle = const TextStyle(
+        color: Colors.redAccent, fontWeight: FontWeight.bold, fontSize: 24.0);
+
+    Color redColor = const Color.fromARGB(255, 239, 79, 79);
+    Color greenColor = const Color.fromARGB(255, 83, 218, 153);
 
     // printing high score here gives ACCURATE updates every second.
     //print("high score: ${globals.highScore}");
@@ -246,12 +257,12 @@ class _GameScreenState extends State<GameScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Get That Fruit!"),
-        backgroundColor: Colors.redAccent,
+        title: Text("Get That Fruit!", style: titleTextStyle),
+        backgroundColor: greenColor,
       ),
       body: Container(
           alignment: Alignment.center,
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
@@ -262,9 +273,7 @@ class _GameScreenState extends State<GameScreen> {
                       onPressed: startTimer,
                       child: const Text(
                         'Start!',
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
+                        style: TextStyle(fontSize: 20, color: Colors.white),
                       ),
                     ),
                     Padding(
@@ -274,7 +283,8 @@ class _GameScreenState extends State<GameScreen> {
                         children: <Widget>[
                           Text(
                               key: const Key("seconds"),
-                              'Time Remaining: $seconds'),
+                              'Time Remaining: $seconds',
+                              style: const TextStyle(fontSize: 22)),
                         ],
                       ),
                     ),
