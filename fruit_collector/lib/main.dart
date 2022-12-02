@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'player.dart';
 import 'package:flutter/services.dart';
-//import 'dart:html';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,12 +32,10 @@ class MyApp extends StatelessWidget {
         ),
         initial: AdaptiveThemeMode.light,
         builder: (theme, darkTheme) => MaterialApp(
-              title: 'Flutter Demo',
+              title: 'Fruit Game!',
               theme: theme,
               darkTheme: darkTheme,
-              home: const MyHomePage(
-                title: 'Fruit Game',
-              ),
+              home: MyHomePage(),
             ));
   }
 }
@@ -46,12 +43,9 @@ class MyApp extends StatelessWidget {
 // https://docs.flutter.dev/cookbook/navigation/navigation-basics
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({
+  MyHomePage({
     Key? key,
-    required this.title,
   }) : super(key: key);
-
-  final String title;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -76,13 +70,14 @@ class _MyHomePageState extends State<MyHomePage> {
     // THIS VARIABLE SHOULD UPDATE THE HIGH SCORE BUT IT'S NOT RELOADING!
     var highScore = globals.highScore;
 
-    print("this is the new high score: ${highScore.toString()}");
+    TextStyle titleTextStyle = const TextStyle(
+        color: Colors.white, fontWeight: FontWeight.bold, fontSize: 24.0);
 
     return Scaffold(
         appBar: AppBar(
           // Here we take the value from the MyHomePage object that was created by
           // the App.build method, and use it to set our appbar title.
-          title: Text(widget.title),
+          title: Text("Fruit Game!", style: titleTextStyle),
           leading: Builder(
             builder: (BuildContext context) {
               return IconButton(
@@ -110,8 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
             TextButton(
                 key: const Key("Game Button"),
                 style: TextButton.styleFrom(
-                  backgroundColor:
-                      Colors.greenAccent, //backgroundColor: Colors.white,
+                  backgroundColor: Color.fromARGB(255, 28, 223, 128),
                   padding: const EdgeInsets.all(16.0),
                   textStyle: const TextStyle(fontSize: 12),
                 ),
