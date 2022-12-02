@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:math' as math;
-import 'dart:math';
 import 'globals.dart' as globals;
 
 import 'package:flutter/material.dart';
@@ -26,8 +25,8 @@ class Player extends StatefulWidget {
   final int fruitAmount;
 
   @override
-  // ignore: no_logic_in_create_state
   State<StatefulWidget> createState() =>
+      // ignore: no_logic_in_create_state
       PlayerState(rows, columns, cellSize, fruitAmount);
 }
 

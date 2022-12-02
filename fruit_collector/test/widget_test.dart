@@ -7,7 +7,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:fruit_collector/fruit.dart';
 import 'dart:math' as math;
 import 'package:fruit_collector/main.dart';
 import 'package:fruit_collector/player.dart';
@@ -28,8 +27,7 @@ void main() {
   testWidgets('Button takes you to game screen', (WidgetTester tester) async {
     // Build our app and trigger a frame.
 
-    await tester
-        .pumpWidget(const MaterialApp(home: MyHomePage(title: "Fruit Game")));
+    await tester.pumpWidget(MaterialApp(home: MyHomePage()));
 
     final buttonFinder = find.byKey(const Key("Game Button"));
 
@@ -46,8 +44,7 @@ void main() {
 //This test ensures hitting the timer starts the game
   testWidgets('Game timer starts correctly', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester
-        .pumpWidget(const MaterialApp(home: MyHomePage(title: "Fruit Game")));
+    await tester.pumpWidget(MaterialApp(home: MyHomePage()));
 
     final buttonFinder1 = find.byKey(const Key("Game Button"));
 
@@ -69,8 +66,7 @@ void main() {
 // This test ensures that the game starts when a player clicks the timer button
   testWidgets('Game timer starts correctly', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester
-        .pumpWidget(const MaterialApp(home: MyHomePage(title: "Fruit Game")));
+    await tester.pumpWidget(MaterialApp(home: MyHomePage()));
 
     final buttonFinder1 = find.byKey(const Key("Game Button"));
 
@@ -106,12 +102,10 @@ void main() {
 //This test uses player movement along with collecting a fruit and adding it to the score.
   test('Fruit Collection', () {
     final player = Player();
-    final player_s = PlayerState(
-        player.rows, player.columns, player.cellSize, player.fruitAmount);
-    final game_s = GameState(player.rows, player.columns, player.fruitAmount);
+    final gameS = GameState(player.rows, player.columns, player.fruitAmount);
 
-    game_s.body = <math.Point<int>>[const math.Point<int>(2, 2)];
-    game_s.checkCollision();
+    gameS.body = <math.Point<int>>[const math.Point<int>(2, 2)];
+    gameS.checkCollision();
 
     expect(globals.points, 1);
   });
@@ -119,20 +113,17 @@ void main() {
   testWidgets('High Score', (WidgetTester tester) async {
     //for some reason, this requires to be run on its own instead of all the tests at once.
 
-    await tester
-        .pumpWidget(const MaterialApp(home: MyHomePage(title: "Fruit Game")));
+    await tester.pumpWidget(MaterialApp(home: MyHomePage()));
 
     //high score starts at 0
     expect(globals.highScore, 0);
 
     //high points score should set a new high score
     final player = Player();
-    final player_s = PlayerState(
-        player.rows, player.columns, player.cellSize, player.fruitAmount);
-    final game_s = GameState(player.rows, player.columns, player.fruitAmount);
+    final gameS = GameState(player.rows, player.columns, player.fruitAmount);
 
-    game_s.body = <math.Point<int>>[const math.Point<int>(2, 2)];
-    game_s.checkCollision();
+    gameS.body = <math.Point<int>>[const math.Point<int>(2, 2)];
+    gameS.checkCollision();
     expect(globals.points, 1);
     expect(globals.highScore, 1);
     await tester.pump();
@@ -150,8 +141,7 @@ void main() {
     globals.highScore = 3;
 
     //builds and tests display
-    await tester
-        .pumpWidget(const MaterialApp(home: MyHomePage(title: "Fruit Game")));
+    await tester.pumpWidget(MaterialApp(home: MyHomePage()));
     expect(find.byKey(const Key("High Score Text")), findsOneWidget);
     expect(find.text("High Score: 3"), findsOneWidget);
   });

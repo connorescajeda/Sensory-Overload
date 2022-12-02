@@ -1,6 +1,6 @@
 library com.example.fruit_collector.globals;
 
-Duration timerDuration = Duration(seconds: 20);
+Duration timerDuration = const Duration(seconds: 20);
 int points = 0;
 //highScore variable changes when points > highScore
 int highScore = 0;
