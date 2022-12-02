@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
 // https://docs.flutter.dev/cookbook/navigation/navigation-basics
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({
+  const MyHomePage({
     Key? key,
   }) : super(key: key);
 
@@ -71,13 +71,18 @@ class _MyHomePageState extends State<MyHomePage> {
     var highScore = globals.highScore;
 
     TextStyle titleTextStyle = const TextStyle(
-        color: Colors.white, fontWeight: FontWeight.bold, fontSize: 24.0);
+        color: Color.fromARGB(255, 83, 218, 153),
+        fontWeight: FontWeight.bold,
+        fontSize: 24.0);
+    Color redColor = const Color.fromARGB(255, 239, 79, 79);
+    Color greenColor = const Color.fromARGB(255, 83, 218, 153);
 
     return Scaffold(
         appBar: AppBar(
           // Here we take the value from the MyHomePage object that was created by
           // the App.build method, and use it to set our appbar title.
           title: Text("Fruit Game!", style: titleTextStyle),
+          backgroundColor: redColor,
           leading: Builder(
             builder: (BuildContext context) {
               return IconButton(
@@ -105,7 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
             TextButton(
                 key: const Key("Game Button"),
                 style: TextButton.styleFrom(
-                  backgroundColor: Color.fromARGB(255, 28, 223, 128),
+                  backgroundColor: greenColor,
                   padding: const EdgeInsets.all(16.0),
                   textStyle: const TextStyle(fontSize: 12),
                 ),
@@ -117,9 +122,9 @@ class _MyHomePageState extends State<MyHomePage> {
                             key: const Key("Game Screen"), onreload: reload)),
                   );
                 },
-                child: Text(
+                child: const Text(
                   'PLAY',
-                  style: Theme.of(context).textTheme.headlineLarge,
+                  style: TextStyle(color: Colors.white, fontSize: 60),
                 )),
           ],
         )),
@@ -129,21 +134,22 @@ class _MyHomePageState extends State<MyHomePage> {
           child: ListView(
             padding: EdgeInsets.zero,
             children: [
-              const DrawerHeader(
+              DrawerHeader(
                 decoration: BoxDecoration(
-                  color: Colors.red,
+                  color: redColor,
                 ),
-                child: Text('App Preferences'),
+                child: Text('App Preferences',
+                    style: TextStyle(color: greenColor, fontSize: 40)),
               ),
               ListTile(
-                title: const Text('Light Mode'),
+                title: const Text('Light Mode', style: TextStyle(fontSize: 20)),
                 onTap: () {
                   AdaptiveTheme.of(context).setLight();
                   Navigator.pop(context);
                 },
               ),
               ListTile(
-                title: const Text('Dark Mode'),
+                title: const Text('Dark Mode', style: TextStyle(fontSize: 20)),
                 onTap: () {
                   AdaptiveTheme.of(context).setDark();
 
@@ -158,10 +164,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
 typedef HotReload = Function();
 
+// ignore: must_be_immutable
 class GameScreen extends StatefulWidget {
   GameScreen({Key? key, required this.onreload}) : super(key: key);
 
   final HotReload onreload;
+
+  Color redColor = const Color.fromARGB(255, 239, 79, 79);
+  Color greenColor = const Color.fromARGB(255, 83, 218, 153);
 
   @override
   GameScreenState createState() => GameScreenState();
@@ -229,6 +239,12 @@ class GameScreenState extends State<GameScreen> {
     final seconds = strDigits(globals.timerDuration.inSeconds.remainder(90));
     final pointTotal = globals.points;
 
+    TextStyle titleTextStyle = const TextStyle(
+        color: Colors.redAccent, fontWeight: FontWeight.bold, fontSize: 24.0);
+
+    Color redColor = const Color.fromARGB(255, 239, 79, 79);
+    Color greenColor = const Color.fromARGB(255, 83, 218, 153);
+
     // printing high score here gives ACCURATE updates every second.
     //print("high score: ${globals.highScore}");
 
@@ -241,8 +257,8 @@ class GameScreenState extends State<GameScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Get That Fruit!"),
-        backgroundColor: Colors.redAccent,
+        title: Text("Get That Fruit!", style: titleTextStyle),
+        backgroundColor: greenColor,
       ),
       body: Container(
           alignment: Alignment.center,
@@ -257,9 +273,7 @@ class GameScreenState extends State<GameScreen> {
                       onPressed: startTimer,
                       child: const Text(
                         'Start!',
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
+                        style: TextStyle(fontSize: 20, color: Colors.white),
                       ),
                     ),
                     Padding(
@@ -269,7 +283,8 @@ class GameScreenState extends State<GameScreen> {
                         children: <Widget>[
                           Text(
                               key: const Key("seconds"),
-                              'Time Remaining: $seconds'),
+                              'Time Remaining: $seconds',
+                              style: const TextStyle(fontSize: 22)),
                         ],
                       ),
                     ),
