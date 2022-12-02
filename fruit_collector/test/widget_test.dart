@@ -7,7 +7,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:fruit_collector/fruit.dart';
 import 'dart:math' as math;
 import 'package:fruit_collector/main.dart';
 import 'package:fruit_collector/player.dart';
@@ -106,12 +105,10 @@ void main() {
 //This test uses player movement along with collecting a fruit and adding it to the score.
   test('Fruit Collection', () {
     final player = Player();
-    final player_s = PlayerState(
-        player.rows, player.columns, player.cellSize, player.fruitAmount);
-    final game_s = GameState(player.rows, player.columns, player.fruitAmount);
+    final gameS = GameState(player.rows, player.columns, player.fruitAmount);
 
-    game_s.body = <math.Point<int>>[const math.Point<int>(2, 2)];
-    game_s.checkCollision();
+    gameS.body = <math.Point<int>>[const math.Point<int>(2, 2)];
+    gameS.checkCollision();
 
     expect(globals.points, 1);
   });
@@ -127,12 +124,10 @@ void main() {
 
     //high points score should set a new high score
     final player = Player();
-    final player_s = PlayerState(
-        player.rows, player.columns, player.cellSize, player.fruitAmount);
-    final game_s = GameState(player.rows, player.columns, player.fruitAmount);
+    final gameS = GameState(player.rows, player.columns, player.fruitAmount);
 
-    game_s.body = <math.Point<int>>[const math.Point<int>(2, 2)];
-    game_s.checkCollision();
+    gameS.body = <math.Point<int>>[const math.Point<int>(2, 2)];
+    gameS.checkCollision();
     expect(globals.points, 1);
     expect(globals.highScore, 1);
     await tester.pump();

@@ -3,9 +3,7 @@ import 'globals.dart' as globals;
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:sensors_plus/sensors_plus.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'globals.dart';
 import 'player.dart';
 import 'package:flutter/services.dart';
 //import 'dart:html';
@@ -13,7 +11,7 @@ import 'package:flutter/services.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-      .then((value) => runApp(MyApp()));
+      .then((value) => runApp(const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -76,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // than having to individually change instances of widgets.
 
     // THIS VARIABLE SHOULD UPDATE THE HIGH SCORE BUT IT'S NOT RELOADING!
-    var _highScore = globals.highScore;
+    var highScore = globals.highScore;
 
     print("this is the new high score: ${highScore.toString()}");
 
@@ -107,7 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 padding: const EdgeInsets.only(bottom: 150),
                 child:
                     //displaying the high score
-                    Text(('High Score: ${_highScore}'),
+                    Text(('High Score: $highScore'),
                         key: const Key("High Score Text"), textScaleFactor: 2)),
             TextButton(
                 key: const Key("Game Button"),
@@ -122,7 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => GameScreen(
-                            key: Key("Game Screen"), onreload: reload)),
+                            key: const Key("Game Screen"), onreload: reload)),
                   );
                 },
                 child: Text(
@@ -172,10 +170,10 @@ class GameScreen extends StatefulWidget {
   final HotReload onreload;
 
   @override
-  _GameScreenState createState() => _GameScreenState();
+  GameScreenState createState() => GameScreenState();
 }
 
-class _GameScreenState extends State<GameScreen> {
+class GameScreenState extends State<GameScreen> {
   static const int _fruitRows = 40;
   static const int _fruitColumns = 30;
   static const double _fruitCellSize = 10.0;
@@ -190,11 +188,11 @@ class _GameScreenState extends State<GameScreen> {
   bool flag = false;
   void startTimer() {
     setState(() => globals.timerDuration =
-        Duration(seconds: 20)); //this starts the timer countdown
+        const Duration(seconds: 20)); //this starts the timer countdown
     globals.points =
         0; //sets points to 0 because if we're starting the timer we're restarting the game
     countdownTimer =
-        Timer.periodic(Duration(seconds: 1), (_) => setCountDown());
+        Timer.periodic(const Duration(seconds: 1), (_) => setCountDown());
   }
 
   void stopTimer() {
@@ -204,6 +202,7 @@ class _GameScreenState extends State<GameScreen> {
     widget.onreload();
   }
 
+  @override
   void dispose() {
     super.dispose();
     countdownTimer?.cancel();
@@ -224,7 +223,9 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   @override
-  void initState() {}
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -246,12 +247,12 @@ class _GameScreenState extends State<GameScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Get That Fruit!"),
+        title: const Text("Get That Fruit!"),
         backgroundColor: Colors.redAccent,
       ),
       body: Container(
           alignment: Alignment.center,
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
